@@ -1,0 +1,28 @@
+import RPi.GPIO as GPIO
+import time
+import picamera
+import datetime
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+sw_1 = 24
+sw_2 = 27
+count= 0   
+GPIO.setup(sw_1,GPIO.IN,pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(sw_2,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+GPIO.add_event_detect(sw_1,GPIO.RISING)
+GPIO.add_event_detect(sw_2,GPIO.FALLING)
+camera = picamera.PiCamera()
+while(1):
+    if GPIO.event_detected(sw_1):
+        print("SW1")
+        img_name="/home/pi/Desktop/SW1/"
+        img_name+=str(datetime.datetime.now())
+        img_name+=".jpg"
+        camera.capture(img_name)
+    if GPIO.event_detected(sw_2):
+        count+=1
+        print("SW2")
+        img_name="/home/pi/Desktop/SW2/Image"
+        img_name+= str(count).zfill(2)
+        img_name+=".jpg"
+        camera.capture(img_name)
