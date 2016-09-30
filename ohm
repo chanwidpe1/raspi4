@@ -19,3 +19,10 @@ while True:
         #ohm = ((Vin*R1)/voltage)-R1
         print("R? = %d"  % ohm)
     time.sleep(0.3)
+
+gp8 =10
+gp9 =12
+gp10 =11
+gp11= 13
+16,15=3.3
+14,9=gnd
