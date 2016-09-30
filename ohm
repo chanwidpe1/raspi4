@@ -1,0 +1,21 @@
+import spidev
+import time
+analog_ch = 1
+spi = spidev.SpiDev()
+spi.open(0,0)
+Vin=3.3
+R1=1000
+def readADC(adcnum):
+    if adcnum > 7 or adcnum < 0:
+            return -1;
+    r = spi.xfer2([4 | 2 | (adcnum >> 2), (adcnum & 3) << 6, 0])
+    adcout = ((r[1] & 15) << 8) + r[2]
+    return adcout
+while True:
+    value = readADC(analog_ch)
+    voltage = value*3.3/4096
+    if voltage > 0:
+        ohm = (R1 * (Vin-voltage))/voltage
+        #ohm = ((Vin*R1)/voltage)-R1
+        print("R? = %d"  % ohm)
+    time.sleep(0.3)
